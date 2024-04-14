@@ -1,0 +1,25 @@
+server:
+  port: 9191
+spring:
+  cloud:
+    stream:
+      default-binder: vinay-logics
+      binders:
+        vinay-logics:
+          type: kafka
+          environment:
+            spring.cloud.stream.kafka.binder.autoCreateTopics: true
+            spring.cloud.stream.kafka.binder.minPartitionCount: 10
+            spring.cloud.stream.kafka.binder.brokers: 'localhost:9092'
+
+      bindings:
+        books-binding:
+          binder: vinay-logics
+          destination: books
+          group: books
+      function:
+        bindings:
+          receiveBook-in-0: books-binding
+    function:
+      definition: receiveBook
+
